@@ -1,0 +1,17 @@
+class Solution:
+    def change(self, amount: int, coins: List[int]) -> int:
+        coins.sort()
+        ans = [[0 for _ in range(len(coins)+1)] for _ in range(amount+1)]
+        for i in range(len(coins)+1):
+            ans[-1][i] = 1
+
+        for i in range(amount-1,-1,-1):
+            for j in range(len(coins),-1,-1):
+                # for k,coin in enumerate(coins):
+                for k in range(j-1,len(coins)):
+                    coin = coins[k]
+                    if i+coin<=amount and k!=-1 and (j==0 or coins[k]>=coins[j-1]):
+                        ans[i][j] += ans[i+coin][k+1]
+        # O(amount*len(coins)^2)
+        return ans[0][0]
+
